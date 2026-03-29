@@ -46,8 +46,8 @@ def base_config():
         description="BMC Helix test",
         authentication={
             "base_url": "https://helix.example.com",
-            "username": "admin",
-            "password": "secret123",
+            "username": "test-helix-user",
+            "password": "test-helix-placeholder",  # noqa: S106 - test fixture only
         },
     )
 
@@ -146,7 +146,7 @@ class TestAuthConfig:
     def test_valid_config(self, ctx, base_config):
         p = BmcHelixProvider(ctx, "x", base_config)
         p.validate_config()
-        assert p.authentication_config.username == "admin"
+        assert p.authentication_config.username == "test-helix-user"
 
     def test_base_url_stored(self, provider):
         assert "helix.example.com" in str(provider.authentication_config.base_url)
@@ -162,8 +162,8 @@ class TestAuthConfig:
             description="x",
             authentication={
                 "base_url": "https://helix.example.com",
-                "username": "u",
-                "password": "p",
+                "username": "test-user",
+                "password": "test-placeholder",  # noqa: S106
                 "verify_ssl": False,
                 "timeout": 60,
             },
@@ -231,8 +231,8 @@ class TestJwtAuth:
 
         call_kwargs = mock_post.call_args
         assert "/api/jwt/login" in call_kwargs[0][0]
-        assert call_kwargs[1]["json"]["username"] == "admin"
-        assert call_kwargs[1]["json"]["password"] == "secret123"
+        assert call_kwargs[1]["json"]["username"] == "test-helix-user"
+        assert call_kwargs[1]["json"]["password"] == "test-helix-placeholder"
 
 
 # ---------------------------------------------------------------------------
